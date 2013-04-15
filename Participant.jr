@@ -1,0 +1,63 @@
+import java.util.Date;
+import java.util.ArrayList;
+/**
+* Classe Participant
+* @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
+* @author Yohann Berthon <yohann.berthon@etu.univ-savoie.fr>
+* @since 15/04/2013
+*/
+public class Participant{
+	private ArrayList<Date> datesExclues;
+	private ArrayList<Date> datesPreferentielles;
+	private String nom;
+	
+	/**
+	* Constructeur sans les dates
+	*/
+	public Participant(String nom){
+		this.nom = nom;
+		this.datesExclues = new ArrayList<Date>();
+		this.datesPreferentielles = new ArrayList<Date>();
+	}
+	
+	/**
+	* Constructeur avec les dates
+	*/
+	public Participant(String nom, ArrayList<Date> datesExclues, ArrayList<Date> datesPreferentielles){
+		this.nom = nom;
+		this.datesExclues = datesExclues;
+		this.datesPreferentielles = datesPreferentielles;
+	}
+	
+	/**
+	* Récupère la liste des dates exclues
+	* @return Liste des dates
+	*/
+	public ArrayList<Date> getDatesExclues(){
+		return this.datesExclues;
+	}
+	
+	/**
+	* Ajoute une date exclue
+	* @param date La date à ajouter
+	*/
+	public void addDatesExclues(Date date){
+		this.datesExclues.add(date);
+	}
+	
+	/**
+	* Récupère la liste des dates préférentielles
+	* @return Liste des dates
+	*/
+	public ArrayList<Date> getDatePreferentielles(){
+		return this.datesPreferentielles;
+	}
+	
+	/**
+	* Ajoute une nouvelle date préférentielle
+	* @param date La date à ajouter
+	*/
+	public void addDatePreferentielle(Date date){
+		this.datesPreferentielles.add(date);
+	}
+}

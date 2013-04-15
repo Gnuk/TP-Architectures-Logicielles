@@ -1,3 +1,4 @@
+import java.util.Date;
 /**
 * TP d'Architectures Logicielles Planification d'une réunion de travail
 * @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
@@ -7,6 +8,8 @@
 public class Planification{
 
 	private TupleSpace ts;
+	private Date dateDebut;
+	private Date dateFin;
 
 	/**
 	* Constructeur
@@ -14,6 +17,34 @@ public class Planification{
 	public Planification(){
 		System.out.println("Mon Planificateur");
 // 		this.testTS();
+		// 01/02/2013 - 01/10/2013
+		this.setIntervalle(new Date(1357081200000L), new Date(1357772400000L));
+		System.out.println(this.isDansIntervalle(new Date(1357167600000L)));
+		System.out.println(this.isDansIntervalle(new Date(1388703600000L)));
+	}
+	
+	/**
+	* Méthode isDansIntervalle
+	*/
+	public boolean isDansIntervalle(Date date){
+		if(this.dateDebut.before(date) && this.dateFin.after(date)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	* Méthode setIntervalle
+	*/
+	public void setIntervalle(Date debut, Date fin){
+		if(debut.before(fin)){
+			this.dateDebut = debut;
+			this.dateFin = fin;
+		}
+		else{
+			System.err.println("Attention : La date de début n'est pas avant la date de fin");
+			System.exit(0);
+		}
 	}
 	
 	/**
