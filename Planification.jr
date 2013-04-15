@@ -1,0 +1,22 @@
+/**
+* TP d'Architectures Logicielles Planification d'une réunion de travail
+* @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
+* @author Yohann Berthon <yohann.berthon@etu.univ-savoie.fr>
+* @since 15/04/2013
+*/
+public class Planification{
+
+	/**
+	* Constructeur
+	*/
+	public Planification(){
+		System.out.println("Mon Planificateur");
+	}
+
+	/**
+	* Lancement du programme
+	*/
+	public static void main(String[] args){
+		new Planification();
+	}
+}

@@ -1,0 +1,13 @@
+*~
+*.pdf
+*.svg
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# JR #
+jrGen/*
