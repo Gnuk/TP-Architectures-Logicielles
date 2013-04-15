@@ -1,0 +1,90 @@
+import java.util.Hashtable;
+import java.util.ArrayList;
+/**
+* Espace de tuples
+* @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
+* @author Yohann Berthon <yohann.berthon@etu.univ-savoie.fr>
+* @since 15/04/2013
+*/
+public class TupleSpace{
+
+	private Hashtable<Object, ArrayList<Object>> ht;
+	/**
+	* Méthode rd pour lire une valeur dans l'espace de tuples
+	* @param key La clé du tuple à consommer
+	* @return La valeur du tuple
+	*/
+	public Object rd(Object key){
+		ArrayList<Object> values =  this.ht.get(key);
+		return values.get(values.size()-1);
+	}
+	
+	/**
+	* Méthode in pour consommer un tuple
+	* @param key La clé du tuple à consommer
+	* @return La valeur du tuple
+	*/
+	public Object in(Object key){
+		try{
+			int last = this.ht.get(key).size() - 1;
+			Object value = this.ht.get(key).get(last);
+			this.ht.get(key).remove(last);
+			if(this.ht.get(key).isEmpty()){
+				this.ht.remove(key);
+			}
+			return value;
+		}
+		catch(Exception e){
+			System.err.println("Vous essayez de lire une valeur qui n'existe plus dans l'espace de tuples");
+			return null;
+		}
+	}
+	
+	/**
+	* Méthode out pour ajouter un tuple à l'espace de tuples
+	* @param key La clé du tuple à ajouter
+	* @param value La valeur du tuple
+	*/
+	public void out(Object key, Object value){
+		if(this.ht.containsKey(key)){
+			this.ht.get(key).add(value);
+		}
+		else{
+			ArrayList<Object> values = new ArrayList<Object>();
+			values.add(value);
+			this.ht.put(key, values);
+		}
+	}
+	
+	/**
+	* Méthode add pour mettre à jour un tuple dans l'espace de tuples
+	* @param key La clé du tuple à mettre à jour
+	* @param value La valeur du tuple
+	*/
+	public void add(Object key, Object value){
+		if(this.ht.containsKey(key)){
+			int last = this.ht.get(key).size()-1;
+			this.ht.get(key).remove(last);
+			this.ht.get(key).add(value);
+		}
+		else{
+			System.err.println("L'espace de tuple ne contient aucun tuple pour cette clé");
+		}
+	}
+	
+	/**
+	* Méthode eval
+	* @deprecated
+	*/
+	public void eval(){
+		
+	}
+	
+	/**
+	* Constructeur
+	*/
+	public TupleSpace(){
+		this.ht = new Hashtable<Object, ArrayList<Object>>();
+	}
+
+}
