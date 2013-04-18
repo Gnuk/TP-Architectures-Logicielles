@@ -12,11 +12,13 @@ public class Participant{
 	private ArrayList<Date> datesExclues;
 	private ArrayList<Date> datesPreferentielles;
 	private String nom;
+	private SimpleDateFormat formatter;
 	
 	/**
 	* Constructeur sans les dates
 	*/
 	public Participant(String nom){
+		this.formatter = new SimpleDateFormat("MM/dd/yyyy");
 		this.nom = nom;
 		this.datesExclues = new ArrayList<Date>();
 		this.datesPreferentielles = new ArrayList<Date>();
@@ -26,6 +28,7 @@ public class Participant{
 	* Constructeur avec les dates
 	*/
 	public Participant(String nom, ArrayList<Date> datesExclues, ArrayList<Date> datesPreferentielles){
+		this.formatter = new SimpleDateFormat("MM/dd/yyyy");
 		this.nom = nom;
 		this.datesExclues = datesExclues;
 		this.datesPreferentielles = datesPreferentielles;
@@ -40,7 +43,7 @@ public class Participant{
 	}
 	
 	/**
-	* Ajoute une date exclue
+	* Ajoute une nouvelle date exclue
 	* @param date La date à ajouter
 	*/
 	public void addDatesExclues(Date date){
@@ -48,13 +51,12 @@ public class Participant{
 	}
 	
 	/**
-	* Ajoute une date exclue
+	* Ajoute une nouvelle date exclue
 	* @param stringDate La date à ajouter au format MM/dd/yyyy
 	*/
 	public void addDatesExclues(String stringDate){
 		try{
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-			this.datesExclues.add(format.parse(stringDate));
+			this.datesExclues.add(this.formatter.parse(stringDate));
 		}
 		catch(Exception e){
 			System.err.println("Le format de date n'es pas respecté");
@@ -76,6 +78,20 @@ public class Participant{
 	*/
 	public void addDatePreferentielle(Date date){
 		this.datesPreferentielles.add(date);
+	}
+	
+	/**
+	* Ajoute une nouvelle date préférentielle
+	* @param stringDate La date à ajouter au format MM/dd/yyyy
+	*/
+	public void addDatePreferentielle(String stringDate){
+		try{
+			this.datesPreferentielles.add(this.formatter.parse(stringDate));
+		}
+		catch(Exception e){
+			System.err.println("Le format de date n'es pas respecté");
+			System.exit(0);
+		}
 	}
 	
 	/**
