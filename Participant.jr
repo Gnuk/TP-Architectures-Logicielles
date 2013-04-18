@@ -60,4 +60,17 @@ public class Participant{
 	public void addDatePreferentielle(Date date){
 		this.datesPreferentielles.add(date);
 	}
+	
+	/**
+	* Vérifie si un participant est disponible pour une date
+	* @param date La date à vérifier
+	*/
+	public boolean isDispoPourDate(Date date){
+		for(int i = 0; i < this.datesExclues.size(); i++){
+			if(this.datesExclues.get(i).equals(date)){
+				return false;
+			}
+		}
+		return true;
+	}
 }

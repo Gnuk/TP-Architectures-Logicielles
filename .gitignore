@@ -11,3 +11,7 @@
 
 # JR #
 jrGen/*
+
+# Kate #
+.kateproject
+.kateproject.d/
