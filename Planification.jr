@@ -106,7 +106,7 @@ public class Planification{
 	private int compteDatePreferentielle(Date date){
 		int cpt = 0;
 		for(Participant participant: this.participants){
-			if(participant.checkDatePreferentielle(date){
+			if(participant.checkDatePreferentielle(date)){
 				cpt++;
 			}
 		}
