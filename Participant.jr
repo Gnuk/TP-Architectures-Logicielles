@@ -1,5 +1,7 @@
 import java.util.Date;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+
 /**
 * Classe Participant
 * @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
@@ -43,6 +45,21 @@ public class Participant{
 	*/
 	public void addDatesExclues(Date date){
 		this.datesExclues.add(date);
+	}
+	
+	/**
+	* Ajoute une date exclue
+	* @param stringDate La date à ajouter au format MM/dd/yyyy
+	*/
+	public void addDatesExclues(String stringDate){
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			this.datesExclues.add(format.parse(stringDate));
+		}
+		catch(Exception e){
+			System.err.println("Le format de date n'es pas respecté");
+			System.exit(0);
+		}
 	}
 	
 	/**
