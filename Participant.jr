@@ -90,4 +90,17 @@ public class Participant{
 		}
 		return true;
 	}
+	
+	/**
+	* Vérifie si une date est parmis les dates préférées du participant
+	* @param date La date à vérifier
+	*/
+	public boolean checkDatePreferentielle(Date date){
+		for(int i = 0; i < this.datesPreferentielles.size(); i++){
+			if(this.datesPreferentielles.get(i).equals(date)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
