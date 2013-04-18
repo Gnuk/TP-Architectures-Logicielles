@@ -20,8 +20,21 @@ public class Planification{
 	*/
 	public Planification(){
 		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
+		this.ts = new TupleSpace();
+		
 		System.out.println("Mon Planificateur");
 		this.participants = new ArrayList<Participant>();
+		
+// 		ArrayList<Participant> participants = new ArrayList<Participant>();
+// 		Participant henri = new Participant("Henri");
+// 		henri.addDatesExclues("05/02/2013");
+// 		henri.addDatesExclues("12/05/2013");
+// 		henri.addDatesExclues("03/07/2013");
+// 		henri.addDatesExclues("25/09/2013");
+// 		participants.add(henri);
+// 		
+// 		this.ts.out("Participants", participants);
+
 // 		this.testTS();
 		// 01/02/2013 - 01/10/2013
 		this.setIntervalle("01/02/2013", "01/10/2013");

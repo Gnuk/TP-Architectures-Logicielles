@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 * @since 15/04/2013
 */
 public class Participant{
-	private TupleSpace ts;
 	private ArrayList<Date> datesExclues;
 	private ArrayList<Date> datesPreferentielles;
 	private String nom;
@@ -18,7 +17,7 @@ public class Participant{
 	/**
 	* Constructeur sans les dates
 	*/
-	public Participant(TupleSpace ts, String nom){
+	public Participant(String nom){
 		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
 		this.nom = nom;
 		this.datesExclues = new ArrayList<Date>();
@@ -28,7 +27,7 @@ public class Participant{
 	/**
 	* Constructeur avec les dates
 	*/
-	public Participant(TupleSpace ts, String nom, ArrayList<Date> datesExclues, ArrayList<Date> datesPreferentielles){
+	public Participant(String nom, ArrayList<Date> datesExclues, ArrayList<Date> datesPreferentielles){
 		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
 		this.nom = nom;
 		this.datesExclues = datesExclues;
