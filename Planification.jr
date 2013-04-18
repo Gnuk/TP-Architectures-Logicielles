@@ -69,6 +69,17 @@ public class Planification{
 		return false;
 	}
 	
+	private int compteDatePreferentielle(Date date){
+		int cpt = 0;
+		for(Participant participant: this.participants){
+			if(participant.checkDatePreferentielle(date){
+				cpt++;
+			}
+		}
+		return cpt;
+	}
+	
+	
 	/**
 	* Méthode testTS
 	*/
