@@ -56,7 +56,7 @@ public class Participant{
 	*/
 	public void addDatesExclues(String stringDate){
 		try{
-			this.datesExclues.add(this.formatter.parse(stringDate));
+			this.addDatesExclues(this.formatter.parse(stringDate));
 		}
 		catch(Exception e){
 			System.err.println("Le format de date n'es pas respecté");
@@ -86,7 +86,7 @@ public class Participant{
 	*/
 	public void addDatePreferentielle(String stringDate){
 		try{
-			this.datesPreferentielles.add(this.formatter.parse(stringDate));
+			this.addDatePreferentielle(this.formatter.parse(stringDate));
 		}
 		catch(Exception e){
 			System.err.println("Le format de date n'es pas respecté");

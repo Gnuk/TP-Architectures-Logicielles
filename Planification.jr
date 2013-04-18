@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 /**
 * TP d'Architectures Logicielles Planification d'une réunion de travail
 * @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
@@ -12,18 +13,22 @@ public class Planification{
 	private Date dateDebut;
 	private Date dateFin;
 	private ArrayList<Participant> participants;
+	private SimpleDateFormat formatter;
 
 	/**
 	* Constructeur
 	*/
 	public Planification(){
+		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.println("Mon Planificateur");
 		this.participants = new ArrayList<Participant>();
 // 		this.testTS();
 		// 01/02/2013 - 01/10/2013
-		this.setIntervalle(new Date(1357081200000L), new Date(1357772400000L));
-		System.out.println(this.isDansIntervalle(new Date(1357167600000L)));
-		System.out.println(this.isDansIntervalle(new Date(1388703600000L)));
+		this.setIntervalle("01/02/2013", "01/10/2013");
+		System.out.println(this.dateDebut.toString() + " :: " + this.dateFin.toString());
+		//this.setIntervalle(new Date(1357081200000L), new Date(1357772400000L));
+		System.out.println(this.isDansIntervalle("01/04/2013"));
+		System.out.println(this.isDansIntervalle("01/11/2013"));
 	}
 	
 	/**
@@ -32,6 +37,20 @@ public class Planification{
 	public boolean isDansIntervalle(Date date){
 		if(this.dateDebut.before(date) && this.dateFin.after(date)){
 			return true;
+		}
+		return false;
+	}
+	
+	/**
+	* Méthode isDansIntervalle
+	*/
+	public boolean isDansIntervalle(String stringDate){
+		try{
+			return this.isDansIntervalle(this.formatter.parse(stringDate));
+		}
+		catch(Exception e){
+			System.err.println("Le format de date n'es pas respecté");
+			System.exit(0);
 		}
 		return false;
 	}
@@ -46,6 +65,21 @@ public class Planification{
 		}
 		else{
 			System.err.println("Attention : La date de début n'est pas avant la date de fin");
+			System.exit(0);
+		}
+	}
+	
+	/**
+	* Méthode setIntervalle
+	*/
+	public void setIntervalle(String stringDebut, String stringFin){
+		try{
+			Date debut = this.formatter.parse(stringDebut);
+			Date fin = this.formatter.parse(stringFin);
+			this.setIntervalle(debut, fin);
+		}
+		catch(Exception e){
+			System.err.println("Le format de date n'es pas respecté");
 			System.exit(0);
 		}
 	}
