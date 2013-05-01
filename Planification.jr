@@ -10,52 +10,56 @@ import java.text.SimpleDateFormat;
 public class Planification{
 
 	private TupleSpace ts;
-	private Date dateDebut;
-	private Date dateFin;
-	private ArrayList<Participant> participants;
 	private SimpleDateFormat formatter;
 
 	/**
 	* Constructeur
 	*/
 	public Planification(){
-		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
-		this.ts = new TupleSpace();
+		this.initialize();
 		
 		System.out.println("Mon Planificateur");
-		this.participants = new ArrayList<Participant>();
 		
 		
 		ArrayList<Participant> participants = new ArrayList<Participant>();
 		Participant henri = new Participant("Henri");
 		henri.addDateExclue("05/02/2013");
 		henri.addDateExclue("04/02/2013");
+		henri.addDateExclue("12/05/2013");
+		henri.addDateExclue("03/07/2013");
+		henri.addDateExclue("25/09/2013");
+ 		participants.add(henri);
 		ArrayList<Date> datesHenri = henri.getDatesExclues();
 		for(int i=0;i< datesHenri.size(); i++){
 			System.out.println("Date Henri : " + datesHenri.get(i).toString());
 		}
 		
-// 		henri.addDatesExclues("12/05/2013");
-// 		henri.addDatesExclues("03/07/2013");
-// 		henri.addDatesExclues("25/09/2013");
-// 		participants.add(henri);
-// 		
-// 		this.ts.out("Participants", participants);
-
-// 		this.testTS();
-		// 01/02/2013 - 01/10/2013
-		//this.setIntervalle("01/02/2013", "01/10/2013");
-		//System.out.println(this.dateDebut.toString() + " :: " + this.dateFin.toString());
-		//this.setIntervalle(new Date(1357081200000L), new Date(1357772400000L));
-		//System.out.println(this.isDansIntervalle("01/04/2013"));
-		//System.out.println(this.isDansIntervalle("01/11/2013"));
+		this.ts.out("participants", participants);
+		this.setIntervalle("01/02/2013", "01/10/2013");
+		System.out.println("Here");
+		Date dateFin = (Date) this.ts.rd("date fin");
+		Date dateDebut = (Date) this.ts.rd("date debut");
+		System.out.println(dateDebut.toString() + " :: " + dateFin.toString());
+		System.out.println(this.isDansIntervalle("01/04/2013"));
+		System.out.println(this.isDansIntervalle("01/11/2013"));
+	}
+	/**
+	* Initialisation du constructeur
+	*/
+	private void initialize(){
+		this.ts = new TupleSpace();
+		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
+		this.ts.out("date debut", new Date());
+		this.ts.out("date fin", new Date());
 	}
 	
 	/**
 	* Méthode isDansIntervalle
 	*/
 	public boolean isDansIntervalle(Date date){
-		if(this.dateDebut.before(date) && this.dateFin.after(date)){
+		Date dateDebut = (Date) this.ts.rd("date debut");
+		Date dateFin = (Date) this.ts.rd("date fin");
+		if(dateDebut.before(date) && dateFin.after(date)){
 			return true;
 		}
 		return false;
@@ -80,8 +84,8 @@ public class Planification{
 	*/
 	public void setIntervalle(Date debut, Date fin){
 		if(debut.before(fin)){
-			this.dateDebut = debut;
-			this.dateFin = fin;
+			this.ts.add("date debut", debut);
+			this.ts.add("date fin", fin);
 		}
 		else{
 			System.err.println("Attention : La date de début n'est pas avant la date de fin");
@@ -109,11 +113,12 @@ public class Planification{
 	* @param date La date à vérifier pour les participants 
 	*/
 	private boolean isTroisQuartParticipants(Date date){
-		int size = this.participants.size();
+		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
+		int size = participants.size();
 		int troisQuart = ((3*size) /4);
 		int nbDisponibles = 0;
 		for(int i = 0; i < size; i++){
-			if(this.participants.get(i).isDispoPourDate(date)){
+			if(participants.get(i).isDispoPourDate(date)){
 				nbDisponibles++;
 			}
 		}
@@ -124,8 +129,9 @@ public class Planification{
 	}
 	
 	private int compteDatePreferentielle(Date date){
+		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
 		int cpt = 0;
-		for(Participant participant: this.participants){
+		for(Participant participant: participants){
 			if(participant.checkDatePreferentielle(date)){
 				cpt++;
 			}

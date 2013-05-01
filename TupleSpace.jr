@@ -69,6 +69,7 @@ public class TupleSpace{
 		}
 		else{
 			System.err.println("L'espace de tuple ne contient aucun tuple pour cette clé");
+			System.exit(0);
 		}
 	}
 	
