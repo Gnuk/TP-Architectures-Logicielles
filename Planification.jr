@@ -25,9 +25,16 @@ public class Planification{
 		System.out.println("Mon Planificateur");
 		this.participants = new ArrayList<Participant>();
 		
-// 		ArrayList<Participant> participants = new ArrayList<Participant>();
-// 		Participant henri = new Participant("Henri");
-// 		henri.addDatesExclues("05/02/2013");
+		
+		ArrayList<Participant> participants = new ArrayList<Participant>();
+		Participant henri = new Participant("Henri");
+		henri.addDateExclue("05/02/2013");
+		henri.addDateExclue("04/02/2013");
+		ArrayList<Date> datesHenri = henri.getDatesExclues();
+		for(int i=0;i< datesHenri.size(); i++){
+			System.out.println("Date Henri : " + datesHenri.get(i).toString());
+		}
+		
 // 		henri.addDatesExclues("12/05/2013");
 // 		henri.addDatesExclues("03/07/2013");
 // 		henri.addDatesExclues("25/09/2013");
@@ -37,11 +44,11 @@ public class Planification{
 
 // 		this.testTS();
 		// 01/02/2013 - 01/10/2013
-		this.setIntervalle("01/02/2013", "01/10/2013");
-		System.out.println(this.dateDebut.toString() + " :: " + this.dateFin.toString());
+		//this.setIntervalle("01/02/2013", "01/10/2013");
+		//System.out.println(this.dateDebut.toString() + " :: " + this.dateFin.toString());
 		//this.setIntervalle(new Date(1357081200000L), new Date(1357772400000L));
-		System.out.println(this.isDansIntervalle("01/04/2013"));
-		System.out.println(this.isDansIntervalle("01/11/2013"));
+		//System.out.println(this.isDansIntervalle("01/04/2013"));
+		//System.out.println(this.isDansIntervalle("01/11/2013"));
 	}
 	
 	/**

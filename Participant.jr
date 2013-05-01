@@ -9,29 +9,41 @@ import java.text.SimpleDateFormat;
 * @since 15/04/2013
 */
 public class Participant{
-	private ArrayList<Date> datesExclues;
-	private ArrayList<Date> datesPreferentielles;
-	private String nom;
+	//private ArrayList<Date> datesExclues;
+	//private ArrayList<Date> datesPreferentielles;
+	//private String nom;
 	private SimpleDateFormat formatter;
+	private TupleSpace ts;
 	
 	/**
 	* Constructeur sans les dates
 	*/
 	public Participant(String nom){
-		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
-		this.nom = nom;
-		this.datesExclues = new ArrayList<Date>();
-		this.datesPreferentielles = new ArrayList<Date>();
+		this.initialize();
+		this.ts.out("nom", nom);
+		//this.nom = nom;
+		this.ts.out("dates exclues", new ArrayList<Date>());
+		//this.datesExclues = new ArrayList<Date>();
+		this.ts.out("dates preferentielles", new ArrayList<Date>());
+		//this.datesPreferentielles = new ArrayList<Date>();
 	}
 	
 	/**
 	* Constructeur avec les dates
 	*/
 	public Participant(String nom, ArrayList<Date> datesExclues, ArrayList<Date> datesPreferentielles){
+		this.initialize();
+		this.ts.out("nom", nom);
+		//this.nom = nom;
+		this.ts.out("dates exclues", datesExclues);
+		//this.datesExclues = datesExclues;
+		this.ts.out("dates preferentielles", datesPreferentielles);
+		//this.datesPreferentielles = datesPreferentielles;
+	}
+	
+	private void initialize(){
+		this.ts = new TupleSpace();
 		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
-		this.nom = nom;
-		this.datesExclues = datesExclues;
-		this.datesPreferentielles = datesPreferentielles;
 	}
 	
 	/**
@@ -39,24 +51,26 @@ public class Participant{
 	* @return Liste des dates
 	*/
 	public ArrayList<Date> getDatesExclues(){
-		return this.datesExclues;
+		return (ArrayList<Date>) this.ts.rd("dates exclues");
 	}
 	
 	/**
 	* Ajoute une nouvelle date exclue
 	* @param date La date à ajouter
 	*/
-	public void addDatesExclues(Date date){
-		this.datesExclues.add(date);
+	public void addDateExclue(Date date){
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.in("dates exclues");
+		dates.add(date);
+		this.ts.out("dates exclues", dates);
 	}
 	
 	/**
 	* Ajoute une nouvelle date exclue
 	* @param stringDate La date à ajouter au format MM/dd/yyyy
 	*/
-	public void addDatesExclues(String stringDate){
+	public void addDateExclue(String stringDate){
 		try{
-			this.addDatesExclues(this.formatter.parse(stringDate));
+			this.addDateExclue(this.formatter.parse(stringDate));
 		}
 		catch(Exception e){
 			System.err.println("Le format de date n'es pas respecté");
@@ -69,7 +83,7 @@ public class Participant{
 	* @return Liste des dates
 	*/
 	public ArrayList<Date> getDatePreferentielles(){
-		return this.datesPreferentielles;
+		return (ArrayList<Date>) this.ts.rd("dates preferentielles");
 	}
 	
 	/**
@@ -77,7 +91,9 @@ public class Participant{
 	* @param date La date à ajouter
 	*/
 	public void addDatePreferentielle(Date date){
-		this.datesPreferentielles.add(date);
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.in("dates preferentielles");
+		dates.add(date);
+		this.ts.out("dates preferentielles", dates);
 	}
 	
 	/**
@@ -99,8 +115,9 @@ public class Participant{
 	* @param date La date à vérifier
 	*/
 	public boolean isDispoPourDate(Date date){
-		for(int i = 0; i < this.datesExclues.size(); i++){
-			if(this.datesExclues.get(i).equals(date)){
+		ArrayList<Date> datesExclues = (ArrayList<Date>) this.ts.rd("dates exclues");
+		for(int i = 0; i < datesExclues.size(); i++){
+			if(datesExclues.get(i).equals(date)){
 				return false;
 			}
 		}
@@ -112,8 +129,9 @@ public class Participant{
 	* @param date La date à vérifier
 	*/
 	public boolean checkDatePreferentielle(Date date){
-		for(int i = 0; i < this.datesPreferentielles.size(); i++){
-			if(this.datesPreferentielles.get(i).equals(date)){
+		ArrayList<Date> datesPreferentielles = (ArrayList<Date>) this.ts.rd("dates preferentielles");
+		for(int i = 0; i < datesPreferentielles.size(); i++){
+			if(datesPreferentielles.get(i).equals(date)){
 				return true;
 			}
 		}
