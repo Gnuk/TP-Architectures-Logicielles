@@ -320,24 +320,6 @@ public class Planification{
 		cal.add(Calendar.DATE, days);
 		return cal.getTime();
 	}
-	
-	
-	/**
-	* Méthode testTS
-	*/
-	public void testTS(){
-		System.out.println("== Début du jeu de tests ==");
-		TupleSpace tuples = new TupleSpace();
-		tuples.out("42", 33);
-		tuples.out("42", 42);
-		System.out.println(tuples.rd("42"));
-		tuples.add("42", 25);
-		System.out.println(tuples.rd("42"));
-		System.out.println(tuples.in("42"));
-		System.out.println(tuples.in("42"));
-		System.out.println(tuples.in("42"));
-		System.out.println("== Fin du jeu de tests ==");
-	}
 
 	/**
 	* Lancement du programme
