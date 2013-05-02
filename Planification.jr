@@ -2,6 +2,8 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Scanner;
+
 /**
 * TP d'Architectures Logicielles Planification d'une réunion de travail
 * @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
@@ -12,38 +14,191 @@ public class Planification{
 
 	private TupleSpace ts;
 	private SimpleDateFormat formatter;
-
+	
+	/*
+	* Agents
+	*/
+	private op void participant();
+	private op void changeParticipant(String nom);
+	private op void organisateur();
+	private op void menu();
+	private op void participantSaisirDates(String nom);
+	private op void participantDatesPreferentielles(String nom);
+	private op void participantDatesExclues(String nom);
+	
+	private void menu(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("# Organisation ([q] pour quitter)");
+		System.out.println("1) Définir l'intervalle");
+		System.out.println("2) Ajouter un participant");
+		System.out.println("3) Modifier un participant");
+		System.out.println("4) Calculer la meilleure date");
+		String choix = sc.nextLine();
+		if(choix.equals("1")){
+			send organisateur();
+		}
+		else if (choix.equals("2")){
+			send participant();
+		}
+		else if (choix.equals("3")){
+			System.out.println(choix);
+		}
+		else if (choix.equals("4")){
+			System.out.println(this.bestDate().toString());
+			send menu();
+		}
+		else if(choix.equals("q")){
+			System.out.println("Au revoir");
+		}
+		else{
+			send menu();
+		}
+		
+	}
+	
+	private void changeParticipant(String nom){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Que voulez-vous faire pour "+nom);
+		System.out.println("1) Changer ses dates");
+		String choix = sc.nextLine();
+		if(choix.equals("1")){
+			send participantSaisirDates(nom);
+		}
+		else{
+			send menu();
+		}
+	}
+	
+	private void participant(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Nom du participant :");
+		String nom = sc.nextLine();
+		if(nom.equals("q")){
+			System.out.println("Pas de participant ajouté");
+			send menu();
+		}
+		else{
+			ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
+			Participant participant = new Participant(nom);
+			participants.add(participant);
+			send participantSaisirDates(nom);
+		}
+		
+	}
+	
+	private void participantSaisirDates(String nom){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("# Dates pour "+nom);
+		System.out.println("1) Exclues");
+		System.out.println("2) Préférentielles");
+		String choix = sc.nextLine();
+		if(choix.equals("1")){
+			send participantDatesExclues(nom);
+		}
+		else if (choix.equals("2")){
+			send participantDatesPreferentielles(nom);
+		}
+		else if (choix.equals("q")){
+			send changeParticipant(nom);
+		}
+		else{
+			System.out.println("Attention : Option invalide");
+			send participantSaisirDates(nom);
+		}
+	}
+	
+	private void participantDatesExclues(String nom){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Ajouter une date exclue pour "+nom);
+		String date = sc.nextLine();
+		if(date.equals("q")){
+			send participantSaisirDates(nom);
+		}
+		else{
+			try{
+				this.setDateExclueOfParticipant(nom, this.formatter.parse(date));
+				send participantDatesExclues(nom);
+			}
+			catch(Exception e){
+				System.out.println("La date ou le nom du participant ne convient pas");
+				send participantDatesExclues(nom);
+			}
+		}
+	}
+	
+	private void participantDatesPreferentielles(String nom){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Ajouter une date préférentielle pour "+nom);
+		String date = sc.nextLine();
+		if(date.equals("q")){
+			send participantSaisirDates(nom);
+		}
+		else{
+			try{
+				this.setDatePreferentielleOfParticipant(nom, this.formatter.parse(date));
+				send participantDatesPreferentielles(nom);
+			}
+			catch(Exception e){
+				System.out.println("La date ou le nom du participant ne convient pas");
+				send menu();
+			}
+		}
+	}
+	
+	private void organisateur(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez choisir la date de début :");
+		String dateDebut = sc.nextLine();
+		System.out.println("Veuillez choisir la date de fin :");
+		String dateFin = sc.nextLine();
+		if(dateDebut.equals("q") || dateFin.equals("q")){
+			send menu();
+		}
+		else{
+			try{
+				this.setIntervalle(this.formatter.parse(dateDebut), this.formatter.parse(dateFin));
+				System.err.println("La date a bien été définie");
+				send menu();
+			}
+			catch(Exception e){
+				System.err.println("Le format de date n'es pas respecté");
+				send organisateur();
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	/**
 	* Constructeur
 	*/
 	public Planification(){
 		this.initialize();
-		
-		System.out.println("Mon Planificateur");
-		
-		
-		ArrayList<Participant> participants = new ArrayList<Participant>();
-		Participant henri = new Participant("Henri");
-		henri.addDateExclue("05/02/2013");
-		henri.addDateExclue("04/02/2013");
-		henri.addDateExclue("12/05/2013");
-		henri.addDateExclue("03/07/2013");
-		henri.addDateExclue("25/09/2013");
- 		participants.add(henri);
-		ArrayList<Date> datesHenri = henri.getDatesExclues();
-		for(int i=0;i< datesHenri.size(); i++){
-			System.out.println("Date Henri : " + datesHenri.get(i).toString());
-		}
-		
-		this.ts.out("participants", participants);
-		this.setIntervalle("01/02/2013", "01/10/2013");
-		System.out.println("Here");
-		Date dateFin = (Date) this.ts.rd("date fin");
-		Date dateDebut = (Date) this.ts.rd("date debut");
-		System.out.println(dateDebut.toString() + " :: " + dateFin.toString());
-		System.out.println(this.isDansIntervalle("01/04/2013"));
-		System.out.println(this.isDansIntervalle("01/11/2013"));
+		send menu();
 	}
+	
+	private void setDateExclueOfParticipant(String name, Date date){
+		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
+		for(Participant p : participants){
+			if(name.equals(p.getNom())){
+				p.addDateExclue(date);
+			}
+		}
+		this.ts.add("participants", participants);
+	}
+	
+	private void setDatePreferentielleOfParticipant(String name, Date date){
+		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
+		for(Participant p : participants){
+			if(name.equals(p.getNom())){
+				p.addDatePreferentielle(date);
+			}
+		}
+		this.ts.add("participants", participants);
+	}
+	
 	/**
 	* Initialisation du constructeur
 	*/
@@ -52,6 +207,8 @@ public class Planification{
 		this.formatter = new SimpleDateFormat("dd/MM/yyyy");
 		this.ts.out("date debut", new Date());
 		this.ts.out("date fin", new Date());
+		ArrayList<Participant> participants = new ArrayList<Participant>();
+		this.ts.out("participants", participants);
 	}
 	
 	/**
@@ -115,12 +272,12 @@ public class Planification{
 	*/
 	private boolean isTroisQuartParticipants(Date date){
 		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
-		int size = participants.size();
-		int troisQuart = ((3*size) /4);
-		int nbDisponibles = 0;
+		double size = (double)participants.size();
+		double troisQuart = ((3*size) /4);
+		double nbDisponibles = 0.0;
 		for(int i = 0; i < size; i++){
 			if(participants.get(i).isDispoPourDate(date)){
-				nbDisponibles++;
+				nbDisponibles = nbDisponibles+1.0;
 			}
 		}
 		if(nbDisponibles >= troisQuart){
