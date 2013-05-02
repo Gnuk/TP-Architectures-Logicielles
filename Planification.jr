@@ -1,6 +1,7 @@
 import java.util.Date;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 /**
 * TP d'Architectures Logicielles Planification d'une réunion de travail
 * @author Anthony REY <anthony.rey@etu.univ-savoie.fr>
@@ -137,6 +138,30 @@ public class Planification{
 			}
 		}
 		return cpt;
+	}
+	
+	private Date bestDate(){
+		Date dateCourante = (Date) this.ts.rd("date debut");
+		Date dateFin = (Date) this.ts.rd("date fin");
+		Date dateChoisie = (Date) this.ts.rd("date debut");
+		int compte = this.compteDatePreferentielle(dateChoisie);
+		while(dateCourante.before(dateFin)){
+			if(this.isTroisQuartParticipants(dateCourante)){
+				if(compte < this.compteDatePreferentielle(dateCourante)){
+					dateChoisie = dateCourante;
+					compte = this.compteDatePreferentielle(dateChoisie);
+				}
+			}
+			dateCourante = this.addDays(dateCourante, 1);
+		}
+		return dateChoisie;
+	}
+	
+	private Date addDays(Date date, int days){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, days);
+		return cal.getTime();
 	}
 	
 	
