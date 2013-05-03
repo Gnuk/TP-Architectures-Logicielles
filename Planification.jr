@@ -95,6 +95,7 @@ public class Planification{
 	
 	/**
 	* Permet de modifier un participant
+	* @param nom Le lom du participant
 	*/
 	private void changeParticipant(String nom){
 		Scanner sc = new Scanner(System.in);
@@ -116,6 +117,7 @@ public class Planification{
 	
 	/**
 	* Permet de changer le nom d'un participant
+	* @param nom Le lom du participant
 	*/
 	private void participantNom(String nom){
 		Scanner sc = new Scanner(System.in);
@@ -158,6 +160,7 @@ public class Planification{
 	
 	/**
 	* Changer les dates d'un participant
+	* @param nom Le lom du participant
 	*/
 	private void participantSaisirDates(String nom){
 		Scanner sc = new Scanner(System.in);
@@ -183,6 +186,7 @@ public class Planification{
 	
 	/**
 	* Choisir les dates exclues pour un participant
+	* @param nom Le lom du participant
 	*/
 	private void participantDatesExclues(String nom){
 		Scanner sc = new Scanner(System.in);
@@ -205,6 +209,7 @@ public class Planification{
 	
 	/**
 	* Choisir les dates préférentielles pour un participant
+	* @param nom Le lom du participant
 	*/
 	private void participantDatesPreferentielles(String nom){
 		Scanner sc = new Scanner(System.in);
@@ -215,7 +220,7 @@ public class Planification{
 		}
 		else{
 			try{
-				this.setDatePreferentielleOfParticipant(nom, this.formatter.parse(date));
+				this.addDatePreferentielleOfParticipant(nom, this.formatter.parse(date));
 				send participantDatesPreferentielles(nom);
 			}
 			catch(Exception e){
@@ -240,7 +245,6 @@ public class Planification{
 		else{
 			try{
 				this.setIntervalle(this.formatter.parse(dateDebut), this.formatter.parse(dateFin));
-				System.err.println("La date a bien été définie");
 				send menu();
 			}
 			catch(Exception e){
@@ -249,6 +253,10 @@ public class Planification{
 			}
 		}
 	}
+	
+	/////////////////
+	// Code métier //
+	/////////////////
 	
 	/**
 	* Constructeur
@@ -273,7 +281,12 @@ public class Planification{
 		this.ts.add("participants", participants);
 	}
 	
-	private void setDatePreferentielleOfParticipant(String name, Date date){
+	/**
+	* Ajouter une date préférentielle d'un participant à partir de son nom
+	* @param name Le nom du participant
+	* @param date La date à ajouter
+	*/
+	private void addDatePreferentielleOfParticipant(String name, Date date){
 		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
 		for(Participant p : participants){
 			if(name.equals(p.getNom())){
@@ -283,10 +296,9 @@ public class Planification{
 		this.ts.add("participants", participants);
 	}
 	
-	/////////////////
-	// Code métier //
-	/////////////////
-	
+	/**
+	* Affiche les options de l'interface
+	*/
 	private void showCommands(){
 		System.out.println("[q] Pour quitter");
 	}
@@ -346,13 +358,13 @@ public class Planification{
 	* Méthode setIntervalle
 	*/
 	public void setIntervalle(Date debut, Date fin){
-		if(debut.before(fin)){
+		if(debut.before(fin) || debut.equals(fin)){
 			this.ts.add("date debut", debut);
 			this.ts.add("date fin", fin);
+			System.err.println("L'intervalle a bien été définit");
 		}
 		else{
 			System.err.println("Attention : La date de début n'est pas avant la date de fin");
-			System.exit(0);
 		}
 	}
 	
@@ -391,6 +403,10 @@ public class Planification{
 		return false;
 	}
 	
+	/**
+	* Compte le nombre de dates préférentielles pour une date précise en fonction des participants
+	* @return Le nombre de dates
+	*/
 	private int compteDatePreferentielle(Date date){
 		ArrayList<Participant> participants = (ArrayList<Participant>) this.ts.rd("participants");
 		int cpt = 0;
@@ -402,6 +418,10 @@ public class Planification{
 		return cpt;
 	}
 	
+	/**
+	* Retourne la date la plus intéressante pour la réunion
+	* @return La meilleure date si elle existe
+	*/
 	private Date bestDate(){
 		try{
 			Date dateCourante = selectFirstDatePotable();
@@ -423,8 +443,12 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Retourne la première date pouvant convenir aux participants
+	* @return La date pourvant convenir
+	*/
 	private Date selectFirstDatePotable(){
-		Date dateCourante = selectFirstDatePotable();
+		Date dateCourante = (Date) this.ts.rd("date debut");
 		Date dateFin = (Date) this.ts.rd("date fin");
 		while(dateCourante.before(dateFin)){
 			if(this.isTroisQuartParticipants(dateCourante)){
@@ -435,6 +459,10 @@ public class Planification{
 		return null;
 	}
 	
+	/**
+	* Ajoute un jour à une date
+	* @return La date incrémentée d'un jour
+	*/
 	private Date addDays(Date date, int days){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
