@@ -32,6 +32,14 @@ public class Participant{
 		this.ts.out("dates preferentielles", datesPreferentielles);
 	}
 	
+	public String getNom(){
+		return (String) this.ts.rd("nom");
+	}
+	
+	public void setNom(String nom){
+		this.ts.add("nom", nom);
+	}
+	
 	/**
 	* Initialisation pour les constructeurs
 	*/
