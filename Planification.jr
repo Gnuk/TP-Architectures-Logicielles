@@ -89,6 +89,7 @@ public class Planification{
 			send changeParticipant(nom);
 		}
 		else{
+			System.err.println("Le participant "+nom+" n'existe pas dans l'espace de tuples");
 			send chooseParticipant();
 		}
 	}
