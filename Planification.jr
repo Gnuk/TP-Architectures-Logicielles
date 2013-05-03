@@ -141,20 +141,36 @@ public class Planification{
 	}
 	
 	private Date bestDate(){
-		Date dateCourante = (Date) this.ts.rd("date debut");
+		try{
+			Date dateCourante = selectFirstDatePotable();
+			Date dateFin = (Date) this.ts.rd("date fin");
+			Date dateChoisie = dateCourante;
+			int compte = this.compteDatePreferentielle(dateChoisie);
+			while(dateCourante.before(dateFin)){
+				if(this.isTroisQuartParticipants(dateCourante)){
+					if(compte < this.compteDatePreferentielle(dateCourante)){
+						dateChoisie = dateCourante;
+						compte = this.compteDatePreferentielle(dateChoisie);
+					}
+				}
+				dateCourante = this.addDays(dateCourante, 1);
+			}
+			return dateChoisie;
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	private Date selectFirstDatePotable(){
+		Date dateCourante = selectFirstDatePotable();
 		Date dateFin = (Date) this.ts.rd("date fin");
-		Date dateChoisie = (Date) this.ts.rd("date debut");
-		int compte = this.compteDatePreferentielle(dateChoisie);
 		while(dateCourante.before(dateFin)){
 			if(this.isTroisQuartParticipants(dateCourante)){
-				if(compte < this.compteDatePreferentielle(dateCourante)){
-					dateChoisie = dateCourante;
-					compte = this.compteDatePreferentielle(dateChoisie);
-				}
+				return dateCourante;
 			}
 			dateCourante = this.addDays(dateCourante, 1);
 		}
-		return dateChoisie;
+		return null;
 	}
 	
 	private Date addDays(Date date, int days){
