@@ -15,12 +15,12 @@ public class Planification{
 	private TupleSpace ts;
 	private SimpleDateFormat formatter;
 	
-	/*
-	* Agents
-	*/
-	private op void participant();
+	////////////
+	// Agents //
+	////////////
+	private op void addParticipant();
 	private op void changeParticipant(String nom);
-	private op void organisateur();
+	private op void changerIntervalle();
 	private op void menu();
 	private op void participantSaisirDates(String nom);
 	private op void participantDatesPreferentielles(String nom);
@@ -29,6 +29,9 @@ public class Planification{
 	private op void participantNom(String nom);
 	private op void evalBestDate();
 	
+	/**
+	* Interface menu
+	*/
 	private void menu(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("# Menu");
@@ -39,10 +42,10 @@ public class Planification{
 		this.showCommands();
 		String choix = sc.nextLine();
 		if(choix.equals("1")){
-			send organisateur();
+			send changerIntervalle();
 		}
 		else if (choix.equals("2")){
-			send participant();
+			send addParticipant();
 		}
 		else if (choix.equals("3")){
 			send chooseParticipant();
@@ -58,6 +61,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Affiche la date préconisée pour la réunion
+	*/
 	private void evalBestDate(){
 		try{
 			System.out.println("Date : " + this.bestDate().toString());
@@ -69,6 +75,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Choisit un participant à modifier
+	*/
 	private void chooseParticipant(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Nom du participant :");
@@ -84,6 +93,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Permet de modifier un participant
+	*/
 	private void changeParticipant(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Que voulez-vous faire pour "+nom);
@@ -102,6 +114,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Permet de changer le nom d'un participant
+	*/
 	private void participantNom(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Nouveau nom pour "+nom+" :");
@@ -121,7 +136,10 @@ public class Planification{
 		}
 	}
 	
-	private void participant(){
+	/**
+	* Ajout d'un participant
+	*/
+	private void addParticipant(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Nom du participant :");
 		String nom = sc.nextLine();
@@ -138,6 +156,9 @@ public class Planification{
 		
 	}
 	
+	/**
+	* Changer les dates d'un participant
+	*/
 	private void participantSaisirDates(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("# Dates pour "+nom);
@@ -160,6 +181,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Choisir les dates exclues pour un participant
+	*/
 	private void participantDatesExclues(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Ajouter une date exclue pour "+nom);
@@ -179,6 +203,9 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Choisir les dates préférentielles pour un participant
+	*/
 	private void participantDatesPreferentielles(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Ajouter une date préférentielle pour "+nom);
@@ -198,7 +225,10 @@ public class Planification{
 		}
 	}
 	
-	private void organisateur(){
+	/**
+	* Changer l'intervalle de la réunion
+	*/
+	private void changerIntervalle(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Veuillez choisir la date de début :");
 		String dateDebut = sc.nextLine();
@@ -215,7 +245,7 @@ public class Planification{
 			}
 			catch(Exception e){
 				System.err.println("Le format de date n'es pas respecté");
-				send organisateur();
+				send changerIntervalle();
 			}
 		}
 	}
