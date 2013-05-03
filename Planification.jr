@@ -166,6 +166,10 @@ public class Planification{
 		
 	}
 	
+	/**
+	* Supprimer des dates pour un participant
+	* @param nom Le nom du participant
+	*/
 	private void participantSupprimerDates(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("# Supprimer des dates pour "+nom);
@@ -188,6 +192,10 @@ public class Planification{
 		}
 	}
 	
+	/**
+	* Supprimer une date exclue pour un participant
+	* @param nom Son nom
+	*/
 	private void participantSupprimerDatesExclues(String nom){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Supprimer une date exclue pour "+nom);
@@ -195,9 +203,9 @@ public class Planification{
 		ArrayList<Participant> participants = (ArrayList<Participant>)this.ts.rd("participants");
 		for (int i=0; i<participants.size(); i++){
 			if(participants.get(i).getNom().equals(nom)){
-				ArrayList<Date> datesExclues = participants.get(i).getDatesExclues();
+				ArrayList<Date> datesExclues = (ArrayList<Date>) participants.get(i).getDatesExclues();
 				for (int j=0; j<datesExclues.size(); j++){
-					System.out.println(j+") "+datesExlues.get(j).toString());
+					System.out.println(j+") "+datesExclues.get(j).toString());
 				}
 			}
 		}
@@ -206,17 +214,58 @@ public class Planification{
 		if(date.equals("q")){
 			send participantSupprimerDates(nom);
 		}
-		try{
-			participants.remove(participants.get((int)date));
-			this.ts.add("participants", participants);
-			send participantSupprimerDatesExclues(nom);
-		}catch(Exception e){
-			send participantSupprimerDatesExclues(nom);
+		else{
+			try{
+				for(Participant p : participants){
+					if(p.getNom().equals(nom)){
+						p.removeDateExclue(Integer.parseInt(date));
+					}
+				}
+				this.ts.add("participants", participants);
+				send participantSupprimerDatesExclues(nom);
+			}catch(Exception e){
+				System.out.println("Option invalide : " + date);
+				send participantSupprimerDatesExclues(nom);
+			}
 		}
 	}
 	
+	/**
+	* Supprimer une date préférentielle pour un participant
+	* @param nom Son nom
+	*/
 	private void participantSupprimerDatesPreferentielles(String nom){
-	
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Supprimer une date préférentielle pour "+nom);
+		
+		ArrayList<Participant> participants = (ArrayList<Participant>)this.ts.rd("participants");
+		for (int i=0; i<participants.size(); i++){
+			if(participants.get(i).getNom().equals(nom)){
+				ArrayList<Date> datesPreferentielles = (ArrayList<Date>) participants.get(i).getDatesPreferentielles();
+				for (int j=0; j<datesPreferentielles.size(); j++){
+					System.out.println(j+") "+datesPreferentielles.get(j).toString());
+				}
+			}
+		}
+		String date = sc.nextLine();
+		
+		if(date.equals("q")){
+			send participantSupprimerDates(nom);
+		}
+		else{
+			try{
+				for(Participant p : participants){
+					if(p.getNom().equals(nom)){
+						p.removeDatePreferentielle(Integer.parseInt(date));
+					}
+				}
+				this.ts.add("participants", participants);
+				send participantSupprimerDatesPreferentielles(nom);
+			}catch(Exception e){
+				System.out.println("Option invalide : " + date);
+				send participantSupprimerDatesPreferentielles(nom);
+			}
+		}
 	}
 	
 	/**
@@ -225,7 +274,7 @@ public class Planification{
 	*/
 	private void participantSaisirDates(String nom){
 		Scanner sc = new Scanner(System.in);
-		System.out.println("# Dates pour "+nom);
+		System.out.println("# Ajouter des dates pour "+nom);
 		System.out.println("1) Exclues");
 		System.out.println("2) Préférentielles");
 		this.showCommands();

@@ -57,6 +57,14 @@ public class Participant{
 	}
 	
 	/**
+	* Récupère la liste des dates préférentielles
+	* @return Liste des dates
+	*/
+	public ArrayList<Date> getDatesPreferentielles(){
+		return (ArrayList<Date>) this.ts.rd("dates preferentielles");
+	}
+	
+	/**
 	* Ajoute une nouvelle date exclue
 	* @param date La date à ajouter
 	*/
@@ -78,6 +86,54 @@ public class Participant{
 			System.err.println("Le format de date n'es pas respecté");
 			System.exit(0);
 		}
+	}
+	
+	/**
+	* Supprime une date exclue à partir d'une date
+	* @param d La date
+	*/
+	public void removeDateExclue(Date d){
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.rd("dates exclues");
+		for(Date date : dates){
+			if(date.equals(d)){
+				dates.remove(date);
+			}
+		}
+		this.ts.add("dates exclues", dates);
+	}
+	
+	/**
+	* Supprime une date exclue à partir se don indice
+	* @param id L'id
+	*/
+	public void removeDateExclue(int id){
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.rd("dates exclues");
+		dates.remove(id);
+		this.ts.add("dates exclues", dates);
+	}
+	
+	/**
+	* Supprime une date préférentielle à partir d'une date
+	* @param d La date
+	*/
+	public void removeDatePreferentielle(Date d){
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.rd("dates preferentielles");
+		for(Date date : dates){
+			if(date.equals(d)){
+				dates.remove(date);
+			}
+		}
+		this.ts.add("dates preferentielles", dates);
+	}
+	
+	/**
+	* Supprime une date préférentielle à partir se don indice
+	* @param id L'id
+	*/
+	public void removeDatePreferentielle(int id){
+		ArrayList<Date> dates = (ArrayList<Date>) this.ts.rd("dates preferentielles");
+		dates.remove(id);
+		this.ts.add("dates preferentielles", dates);
 	}
 	
 	/**
