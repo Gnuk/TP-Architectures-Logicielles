@@ -36,6 +36,10 @@ public class Participant{
 		return (String) this.ts.rd("nom");
 	}
 	
+	public void setNom(String nom){
+		this.ts.add("nom", nom);
+	}
+	
 	/**
 	* Initialisation pour les constructeurs
 	*/
